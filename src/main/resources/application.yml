@@ -1,0 +1,10 @@
+spring:
+    config:
+        import: sevurity-variable.yml
+    application:
+        name: Memo
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/memo_digging
+        username: root
+        password: ${mysql.password}
