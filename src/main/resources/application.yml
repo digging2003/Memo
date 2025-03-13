@@ -1,6 +1,6 @@
 spring:
     config:
-        import: sevurity-variable.yml
+        import: security-variable.yml
     application:
         name: Memo
     datasource:
@@ -8,3 +8,9 @@ spring:
         url: jdbc:mysql://localhost:3306/memo_digging
         username: root
         password: ${mysql.password}
+    thymeleaf:
+        cache: false
+    mvc:
+        static-path-pattern: /static/**
+mybatis:
+    mapper-locations: mappers/*Mapper.xml

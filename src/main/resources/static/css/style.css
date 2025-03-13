@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+#wrap {
+	width:1200px;
+	margin: 0 auto;
+}
+
+header {
+	height:100px;
+	background-color:#cccccc;
+}
+
+.contents > .user-box {
+	width:400px;
+	background-color:#cccccc;
+}
+
+footer {
+	height:70px;
+	background-color:#cccccc;
+}

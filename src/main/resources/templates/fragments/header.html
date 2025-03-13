@@ -1,0 +1,6 @@
+
+    <header class="d-flex align-items-center justify-content-between">
+        <h1 class="ml-3">Memo</h1>
+        
+        <div class="mr-3" th:if="${session.userId != null}"><span th:text="${session.userName}">유재석</span> <a href="/user/logout">로그아웃</a></div>
+    </header>
