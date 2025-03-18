@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/default}">
+    
+    <section layout:fragment="contents" class="contents d-flex justify-content-center">
+    	<div class="contents-box my-5">
+    		<h1 class="text-center">메모 입력</h1>
+    		<input type="text" class="form-control mt-4" id="titleInput" placeholder="제목을 입력하세요">
+    		<textarea class="form-control mt-2" rows="10" id="contentsInput" placeholder="내용을 입력하세요"></textarea>
+    		<input type="file" class="mt-2">
+    		<div class="d-flex justify-content-between mt-3">
+	    		<a href="/post/list-view" class="btn btn-secondary">목록으로</a>
+	    		<button type="button" class="btn btn-secondary" id="saveBtn">저장</button>
+    		</div>
+    	</div>
+    </section>
+    
+    <script layout:fragment="script">
+    	$(function() {
+    		$("#saveBtn").on("click", function() {
+    			let title = $("#titleInput").val();
+    			let contents =  $("#contentsInput").val();
+    			
+    			if(title == "") {
+    				alert("제목을 입력하세요!");
+    				return;
+    			}
+    			if(contents == "") {
+    				alert("내용을 입력하세요!");
+    				return;
+    			}
+    			
+    			$.ajax({
+    				type:"post"
+    				, url:"/post/create"
+    				, data:{"title":title, "contents":contents}
+    				, succcess:function(response) {
+    					if(response.result == "success") {
+    						location.href = "http://localhost:8080/post/list-view";
+    					} else {
+    						alert("메모 작성 실패!")
+    					}
+    				}
+    				, error:function() {
+    					alert("메모 작성 에러!");
+    				}
+    			})
+    		});
+    		
+    		
+    	})
+    </script>
+    
+</html>
