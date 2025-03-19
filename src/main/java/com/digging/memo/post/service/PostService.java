@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.digging.memo.common.FileManager;
 import com.digging.memo.post.domain.Post;
 import com.digging.memo.post.repository.PostRepository;
 
@@ -19,12 +21,15 @@ public class PostService {
 		this.postRepository = postRepository;
 	}
 	
-	public boolean addPost(int userId, String title, String contents) {
+	public boolean addPost(int userId, String title, String contents, MultipartFile file) {
 			
+		String urlPath = FileManager.saveFile(userId, file);
+		
 		Post post = Post.builder()
 		.userId(userId)
 		.title(title)
 		.contents(contents)
+		.imagePath(urlPath)
 		.build();
 		
 		try {
