@@ -52,6 +52,50 @@ public class PostService {
 		
 		return optionalPost.orElse(null);
 	}
-		
 	
+	// 메모 수정 기능
+	public boolean updatePost(int id, String title, String contents) {
+		Optional<Post> optionalPost = postRepository.findById(id);
+		
+		if(optionalPost.isPresent()) {
+			
+			Post post = optionalPost.get();
+			
+			post = post.toBuilder()
+			.title(title)
+			.contents(contents)
+			.build();
+			
+			try {
+				postRepository.save(post);
+			} catch(PersistenceException e) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	// 메모 삭제 기능
+	public boolean deletePost(int id) {
+		Optional<Post> optionalPost = postRepository.findById(id);
+		if(optionalPost.isPresent()) {
+			
+			Post post = optionalPost.get();
+			
+			try {
+				postRepository.deleteById(id);
+			} catch(PersistenceException e) {
+				return false;
+			}
+			
+		} else {
+			return false;
+		}
+		
+		return true;
+		
+	}
 }

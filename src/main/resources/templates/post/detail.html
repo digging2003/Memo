@@ -4,17 +4,17 @@
     layout:decorate="~{layouts/default}">
     
     <section layout:fragment="contents" class="contents d-flex justify-content-center">
-    	<div class="contents-box my-5">
+    	<div class="contents-box my-5" th:data-id="${post.id}" id="memoContents">
     		<h1 class="text-center">메모 입력</h1>
     		<input type="text" class="form-control mt-4" id="titleInput" placeholder="제목을 입력하세요" th:value="${post.title}" value="메모 제목입니다.">
     		<textarea class="form-control mt-2" rows="10" id="contentsInput" placeholder="내용을 입력하세요" th:text="${post.contents}">메모 내용입니다.</textarea>
     		<img class="mt-2" th:src="${post.imagePath}">
     
     		<div class="d-flex justify-content-between mt-3">
-    			<button type="button" class="btn btn-danger">삭제</button>
+    			<button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>
     			<div>
 		    		<a href="/post/list-view" class="btn btn-secondary">목록으로</a>
-		    		<button type="button" class="btn btn-secondary" id="saveBtn">수정</button>
+		    		<button type="button" class="btn btn-secondary" id="modifyBtn">수정</button>
 	    		</div>
     		</div>
     	</div>
@@ -22,8 +22,62 @@
     
     <script layout:fragment="script">
 	    $(function() {
-	    	$("#saveBtn").on("click", function() {
+	    	$("#modifyBtn").on("click", function() {
 	    		
+	    		let id = $("#memoContents").data("id");
+	    		let title = $("#titleInput").val();
+    			let contents =  $("#contentsInput").val();
+    			
+    			
+    			if(title == "") {
+    				alert("제목을 입력하세요!");
+    				return;
+    			}
+    			if(contents == "") {
+    				alert("내용을 입력하세요!");
+    				return;
+    			}
+    			
+    			
+    			$.ajax({
+    				type:"put"
+    				, url:"/post/update"
+    				, data:{"id":id, "title":title, "contents":contents}
+    				, success:function(response) {
+    					if(response.result == "success") {
+    						location.reload();
+    						alert("메모 수정 완료");
+    					} else {
+    						alert("메모 작성 실패!")
+    					}
+    				}
+    				, error:function() {
+    					alert("메모 작성 에러!");
+    				}
+    			})
+	    		
+	    	});
+	    	
+	    	$("#deleteBtn").on("click", function() {
+	    		
+	    		let id = $("#memoContents").data("id");
+    			
+    			$.ajax({
+    				type:"delete"
+    				, url:"/post/delete"
+    				, data:{"id":id}
+    				, success:function(response) {
+    					if(response.result == "success") {
+    						location.href = "/post/list-view";
+    						alert("메모 삭제 완료");
+    					} else {
+    						alert("메모 삭제 실패!")
+    					}
+    				}
+    				, error:function() {
+    					alert("메모 삭제 에러!");
+    				}
+    			})
 	    		
 	    	});
 	    	
